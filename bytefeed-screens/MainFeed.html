@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ByteFeed | Main Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdcc0",
+                        "primary": "#00629d",
+                        "on-secondary-fixed": "#001d33",
+                        "on-secondary-fixed-variant": "#264969",
+                        "surface": "#f7f9fb",
+                        "outline-variant": "#bfc7d3",
+                        "surface-dim": "#d8dadc",
+                        "primary-container": "#1d9bf0",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-tint": "#00629d",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#db7e00",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#99cbff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "primary-fixed-dim": "#99cbff",
+                        "on-secondary-container": "#3d5e7f",
+                        "on-surface-variant": "#3f4851",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-fixed-variant": "#004a78",
+                        "on-tertiary-fixed-variant": "#6b3b00",
+                        "secondary-container": "#b6d8fe",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-fixed-dim": "#ffb875",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "background": "#f7f9fb",
+                        "surface-container": "#eceef0",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#8d4f00",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#003050",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#a8caef",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#406182",
+                        "secondary-fixed": "#cfe5ff",
+                        "on-tertiary-container": "#472500",
+                        "outline": "#6f7883",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-primary-fixed": "#001d33",
+                        "on-tertiary-fixed": "#2d1600"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .feed-container {
+            border-left: 1px solid rgba(191, 199, 211, 0.2);
+            border-right: 1px solid rgba(191, 199, 211, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-[#f7f9fb]/80 dark:bg-[#191c1e]/80 backdrop-blur-md">
+<div class="flex justify-between items-center w-full px-4 py-3 max-w-2xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="text-xl font-extrabold tracking-tighter text-on-surface">
+                    ByteFeed
+                </div>
+</div>
+<div class="flex-1 max-w-xs mx-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full bg-surface-container border-none rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary-container transition-all" placeholder="Filter by author..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-[#f2f4f6] dark:hover:bg-[#3f4851]/20 transition-all active:scale-95 duration-200">settings</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a young man with a friendly expression in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9aRRsSzvvOA8yDF8Fxylb0t0i17nrXiB8fI-nSYXOR_TWhbSir0UGOvjFjeCzCHBMlx9n8X9cpjnMlnt6btVhIyxoafr-lbGQnOowqgmQDeCg71nJyQeEIfqEZJ8P7ebkJvs-YCspMBAt7Af3rqMezcl6wIhm9CEFxNlAbg-1_4hntto4dmLMVKIfzsKy-0iGi0pcjK0zwpCXVnB4uiPeApzAh7hZ7NlLlt6p9N8Tn3gtcnCNG8PS2tcTZFHu6xbvsomcdPoJ6vXs"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-2xl mx-auto bg-surface-container-lowest min-h-screen feed-container">
+<!-- Post Creation Area -->
+<section class="p-6 border-b border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up avatar of a user with a minimal clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8"/>
+</div>
+</div>
+<div class="flex-1">
+<textarea class="w-full border-none focus:ring-0 text-lg placeholder:text-on-surface-variant/50 resize-none bg-transparent" placeholder="What's on your mind?" rows="3"></textarea>
+<div class="flex justify-between items-center mt-4 pt-4 border-t border-outline-variant/10">
+<div class="flex gap-1 text-primary-container">
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-primary-fixed/30 transition-all">image</button>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-primary-fixed/30 transition-all">gif_box</button>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-primary-fixed/30 transition-all">poll</button>
+<button class="material-symbols-outlined p-2 rounded-full hover:bg-primary-fixed/30 transition-all">sentiment_satisfied</button>
+</div>
+<button class="bg-gradient-to-br from-primary-container to-primary text-on-primary px-6 py-2 rounded-full font-semibold transition-all active:scale-95 hover:opacity-90 shadow-md">
+                            Post
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Post Feed -->
+<div class="flex flex-col">
+<!-- Post 1 -->
+<article class="p-6 hover:bg-surface-container-low/30 transition-colors cursor-pointer border-b border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a man with short hair looking at the camera smiling softly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH8g8EHTLxnnInVfls-6k6QeH6Wbnq4e2HE7xTGAXlEvqnD-PIrZYhsFDlFNBgxLaZuPBnvdfLoxhHInGlHenwr0hI_Mi4pOBGmSagIyeo3H3XehGHCayLsHKgbAElUp0oH5Hn4CN-uqLGRzE_pzrN71drHq9h-KDEdfIv05IiXNYZezS3motxc12-J7SVNOWSsNay8SE5yv-lrRqJhWCy42JDElQMYR_rI1kXBhTrmWnsCWfo6smmFAsT1pbDYrQW45h713gUPnt6"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-bold text-on-surface">Alex Rivera</span>
+<span class="text-on-surface-variant text-sm font-normal">@arivera</span>
+<span class="text-on-surface-variant text-xs mx-1">•</span>
+<span class="text-on-surface-variant text-xs">2m</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:bg-surface-container p-1 rounded-full">more_horiz</button>
+</div>
+<p class="text-on-surface mt-2 leading-relaxed">
+                            Just joined ByteFeed! Excited to see where this goes.
+                        </p>
+<div class="flex justify-between max-w-sm mt-4 text-on-surface-variant">
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
+<span class="text-xs group-hover:text-primary-container">12</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-green-500/10 group-hover:text-green-500 p-2 rounded-full transition-all">autorenew</span>
+<span class="text-xs group-hover:text-green-500">5</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-red-500/10 group-hover:text-red-500 p-2 rounded-full transition-all">favorite</span>
+<span class="text-xs group-hover:text-red-500">24</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">delete</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Post 2 (Liked State) -->
+<article class="p-6 hover:bg-surface-container-low/30 transition-colors cursor-pointer border-b border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional woman with a kind smile and glasses in an office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoVYuDQxV7aOIo7IoOz8LHaDkKkkDYbypQru07ygFFT8FF6e6tyVjFwKyW_vmlCn0UrV_WpBAHmQKNnNld6auoeqLb66iWmlMknLfANzK79-ntqOrIGZUhf0RKLAo9WpKzhdI1jweM7i_ERUT-jBG2haJ5fRaJK08E319W4-nWuBKDahAhW-xDEtUXV2o8LkHxbv1hVoMTEq4p7_n9emTAS9IWr3ObL0rdrpOn_WLXq92NsiXnZ0uj6xn2KuyJ3zW5xtjsqEY692c-"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-bold text-on-surface">Sarah Chen</span>
+<span class="text-on-surface-variant text-sm font-normal">@schen_dev</span>
+<span class="text-on-surface-variant text-xs mx-1">•</span>
+<span class="text-on-surface-variant text-xs">15m</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:bg-surface-container p-1 rounded-full">more_horiz</button>
+</div>
+<p class="text-on-surface mt-2 leading-relaxed">
+                            Building the future, one byte at a time. 🚀
+                        </p>
+<div class="flex justify-between max-w-sm mt-4 text-on-surface-variant">
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
+<span class="text-xs group-hover:text-primary-container">48</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-green-500/10 group-hover:text-green-500 p-2 rounded-full transition-all">autorenew</span>
+<span class="text-xs group-hover:text-green-500">102</span>
+</button>
+<button class="flex items-center gap-2 group text-red-500">
+<span class="material-symbols-outlined text-[20px] p-2 rounded-full transition-all" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-xs">342</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">delete</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Post 3 -->
+<article class="p-6 hover:bg-surface-container-low/30 transition-colors cursor-pointer border-b border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a creative professional in a casual setting with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ6C4cFUD9rMh-kHpKWmBZNjGX9cixnvCUUOTASvN7fQ-_TWm9eFSFDGyqs5b5xiD_VJPiWuobXOOWzN0H5_iJxGp8Z5bjAJsD06cGP6j-8ASY9s3vT18ZdGYdNaIRNXDfG0epauNO6hdbSEqhIDYX2ublt_k7CP6bl-kF3hwoYMYzx95A3bBzu0MY_F2wmYJQMx5Klmk8xImpnMdRCgJWJaRNuTyw8BytOSHfYEK6M3p9gAv2F-XUOONYjB71-IJYMiq5C6U92wpy"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-bold text-on-surface">Jordan Smith</span>
+<span class="text-on-surface-variant text-sm font-normal">@jsmith</span>
+<span class="text-on-surface-variant text-xs mx-1">•</span>
+<span class="text-on-surface-variant text-xs">1h</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:bg-surface-container p-1 rounded-full">more_horiz</button>
+</div>
+<p class="text-on-surface mt-2 leading-relaxed">
+                            Is it just me or is minimalist design just better?
+                        </p>
+<div class="flex justify-between max-w-sm mt-4 text-on-surface-variant">
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
+<span class="text-xs group-hover:text-primary-container">5</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-green-500/10 group-hover:text-green-500 p-2 rounded-full transition-all">autorenew</span>
+<span class="text-xs group-hover:text-green-500">2</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-red-500/10 group-hover:text-red-500 p-2 rounded-full transition-all">favorite</span>
+<span class="text-xs group-hover:text-red-500">89</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">delete</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Post 4 -->
+<article class="p-6 hover:bg-surface-container-low/30 transition-colors cursor-pointer border-b border-outline-variant/10">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">feed</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="font-bold text-on-surface">Tech News</span>
+<span class="text-on-surface-variant text-sm font-normal">@technews</span>
+<span class="text-on-surface-variant text-xs mx-1">•</span>
+<span class="text-on-surface-variant text-xs">3h</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:bg-surface-container p-1 rounded-full">more_horiz</button>
+</div>
+<p class="text-on-surface mt-2 leading-relaxed">
+                            New updates coming to ByteFeed soon. Stay tuned!
+                        </p>
+<div class="flex justify-between max-w-sm mt-4 text-on-surface-variant">
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
+<span class="text-xs group-hover:text-primary-container">21</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-green-500/10 group-hover:text-green-500 p-2 rounded-full transition-all">autorenew</span>
+<span class="text-xs group-hover:text-green-500">15</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-red-500/10 group-hover:text-red-500 p-2 rounded-full transition-all">favorite</span>
+<span class="text-xs group-hover:text-red-500">1.2k</span>
+</button>
+<button class="flex items-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">delete</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Empty State Placeholder (hidden by default) -->
+<div class="hidden flex flex-col items-center justify-center py-20 px-6 text-center" id="no-results">
+<span class="material-symbols-outlined text-6xl text-outline-variant mb-4">search_off</span>
+<h3 class="text-xl font-semibold text-on-surface mb-2">No posts found</h3>
+<p class="text-on-surface-variant">No posts found for this author. Try a different name or clear the filter.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-6 py-3 bg-[#f7f9fb]/80 dark:bg-[#191c1e]/80 backdrop-blur-md border-t border-[#bfc7d3]/20 z-50 md:hidden">
+<button class="bg-[#cfe5ff]/30 text-[#1d9bf0] rounded-full p-2 transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+</button>
+<button class="text-[#3f4851] dark:text-[#bfc7d3] p-2 hover:bg-[#f2f4f6] dark:hover:bg-[#3f4851]/10 rounded-full transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-[#3f4851] dark:text-[#bfc7d3] p-2 hover:bg-[#f2f4f6] dark:hover:bg-[#3f4851]/10 rounded-full transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-[#3f4851] dark:text-[#bfc7d3] p-2 hover:bg-[#f2f4f6] dark:hover:bg-[#3f4851]/10 rounded-full transition-all active:scale-90 duration-150">
+<span class="material-symbols-outlined">mail</span>
+</button>
+</nav>
+<!-- Floating Action Button (Desktop Context) -->
+<button class="hidden md:flex fixed bottom-8 right-8 bg-gradient-to-br from-primary-container to-primary text-on-primary w-14 h-14 rounded-full items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-2xl">edit</span>
+</button>
+</body></html>

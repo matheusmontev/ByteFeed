@@ -1,0 +1,123 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: antigravity
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_handle
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: avatar
+                  type: VARCHAR(1024)
+              - column:
+                  name: comments
+                  type: INT
+                  defaultValueNumeric: 0
+              - column:
+                  name: retweets
+                  type: INT
+                  defaultValueNumeric: 0
+              - column:
+                  name: likes
+                  type: INT
+                  defaultValueNumeric: 0
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: posts
+            columns:
+              - column:
+                  name: author_name
+                  value: Alex Rivera
+              - column:
+                  name: author_handle
+                  value: arivera
+              - column:
+                  name: content
+                  value: Just joined ByteFeed! Excited to see where this goes.
+              - column:
+                  name: comments
+                  valueNumeric: 12
+              - column:
+                  name: retweets
+                  valueNumeric: 5
+              - column:
+                  name: likes
+                  valueNumeric: 24
+              - column:
+                  name: avatar
+                  value: https://lh3.googleusercontent.com/aida-public/AB6AXuCH8g8EHTLxnnInVfls-6k6QeH6Wbnq4e2HE7xTGAXlEvqnD-PIrZYhsFDlFNBgxLaZuPBnvdfLoxhHInGlHenwr0hI_Mi4pOBGmSagIyeo3H3XehGHCayLsHKgbAElUp0oH5Hn4CN-uqLGRzE_pzrN71drHq9h-KDEdfIv05IiXNYZezS3motxc12-J7SVNOWSsNay8SE5yv-lrRqJhWCy42JDElQMYR_rI1kXBhTrmWnsCWfo6smmFAsT1pbDYrQW45h713gUPnt6
+        - insert:
+            tableName: posts
+            columns:
+              - column:
+                  name: author_name
+                  value: Sarah Chen
+              - column:
+                  name: author_handle
+                  value: schen_dev
+              - column:
+                  name: content
+                  value: Building the future, one byte at a time. 🚀
+              - column:
+                  name: comments
+                  valueNumeric: 48
+              - column:
+                  name: retweets
+                  valueNumeric: 102
+              - column:
+                  name: likes
+                  valueNumeric: 342
+              - column:
+                  name: avatar
+                  value: https://lh3.googleusercontent.com/aida-public/AB6AXuDoVYuDQxV7aOIo7IoOz8LHaDkKkkDYbypQru07ygFFT8FF6e6tyVjFwKyW_vmlCn0UrV_WpBAHmQKNnNld6auoeqLb66iWmlMknLfANzK79-ntqOrIGZUhf0RKLAo9WpKzhdI1jweM7i_ERUT-jBG2haJ5fRaJK08E319W4-nWuBKDahAhW-xDEtUXV2o8LkHxbv1hVoMTEq4p7_n9emTAS9IWr3ObL0rdrpOn_WLXq92NsiXnZ0uj6xn2KuyJ3zW5xtjsqEY692c-
+        - insert:
+            tableName: posts
+            columns:
+              - column:
+                  name: author_name
+                  value: Jordan Smith
+              - column:
+                  name: author_handle
+                  value: jsmith
+              - column:
+                  name: content
+                  value: Is it just me or is minimalist design just better?
+              - column:
+                  name: comments
+                  valueNumeric: 5
+              - column:
+                  name: retweets
+                  valueNumeric: 2
+              - column:
+                  name: likes
+                  valueNumeric: 89
+              - column:
+                  name: avatar
+                  value: https://lh3.googleusercontent.com/aida-public/AB6AXuAZ6C4cFUD9rMh-kHpKWmBZNjGX9cixnvCUUOTASvN7fQ-_TWm9eFSFDGyqs5b5xiD_VJPiWuobXOOWzN0H5_iJxGp8Z5bjAJsD06cGP6j-8ASY9s3vT18ZdGYdNaIRNXDfG0epauNO6hdbSEqhIDYX2ublt_k7CP6bl-kF3hwoYMYzx95A3bBzu0MY_F2wmYJQMx5Klmk8xImpnMdRCgJWJaRNuTyw8BytOSHfYEK6M3p9gAv2F-XUOONYjB71-IJYMiq5C6U92wpy

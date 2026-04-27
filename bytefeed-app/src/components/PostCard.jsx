@@ -34,10 +34,12 @@ export default function PostCard({ post }) {
           </Link>
           
           <div className="flex justify-between max-w-sm mt-4 text-on-surface-variant">
-            <button className="flex items-center gap-2 group">
-              <span className="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
-              <span className="text-xs group-hover:text-primary-container">{post.comments}</span>
-            </button>
+            <Link to={`/post/${post.id}`}>
+              <button className="flex items-center gap-2 group">
+                <span className="material-symbols-outlined text-[20px] group-hover:bg-[#1d9bf0]/10 group-hover:text-primary-container p-2 rounded-full transition-all">chat_bubble</span>
+                <span className="text-xs group-hover:text-primary-container">{post.comments}</span>
+              </button>
+            </Link>
             <button className="flex items-center gap-2 group">
               <span className="material-symbols-outlined text-[20px] group-hover:bg-green-500/10 group-hover:text-green-500 p-2 rounded-full transition-all">autorenew</span>
               <span className="text-xs group-hover:text-green-500">{post.retweets}</span>

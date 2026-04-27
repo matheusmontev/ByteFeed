@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
 import { usePosts } from "../PostContext";
@@ -6,15 +6,29 @@ import { usePosts } from "../PostContext";
 export default function PostDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { posts } = usePosts();
+  const { posts, currentUser, formatTime, setPosts } = usePosts();
   
   const post = posts.find(p => p.id === parseInt(id));
   
-  const [comments, setComments] = useState([
-    { id: 1, authorName: "Tech News", authorHandle: "technews", time: "10m", content: "Great post!", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ6C4cFUD9rMh-kHpKWmBZNjGX9cixnvCUUOTASvN7fQ-_TWm9eFSFDGyqs5b5xiD_VJPiWuobXOOWzN0H5_iJxGp8Z5bjAJsD06cGP6j-8ASY9s3vT18ZdGYdNaIRNXDfG0epauNO6hdbSEqhIDYX2ublt_k7CP6bl-kF3hwoYMYzx95A3bBzu0MY_F2wmYJQMx5Klmk8xImpnMdRCgJWJaRNuTyw8BytOSHfYEK6M3p9gAv2F-XUOONYjB71-IJYMiq5C6U92wpy" },
-    { id: 2, authorName: "Jordan Smith", authorHandle: "jsmith", time: "5m", content: "Totally agree with this.", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDoVYuDQxV7aOIo7IoOz8LHaDkKkkDYbypQru07ygFFT8FF6e6tyVjFwKyW_vmlCn0UrV_WpBAHmQKNnNld6auoeqLb66iWmlMknLfANzK79-ntqOrIGZUhf0RKLAo9WpKzhdI1jweM7i_ERUT-jBG2haJ5fRaJK08E319W4-nWuBKDahAhW-xDEtUXV2o8LkHxbv1hVoMTEq4p7_n9emTAS9IWr3ObL0rdrpOn_WLXq92NsiXnZ0uj6xn2KuyJ3zW5xtjsqEY692c-" }
-  ]);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (post) {
+      setIsLoading(true);
+      fetch(`http://localhost:8080/api/posts/${id}/comments`)
+        .then(res => res.json())
+        .then(data => {
+          setComments(data.map(c => ({...c, time: formatTime(c.createdAt)})));
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.error("Failed to load comments", err);
+          setIsLoading(false);
+        });
+    }
+  }, [id, post, formatTime]);
 
   if (!post) {
     return <div className="p-8 text-center">Post not found. <Link to="/feed" className="text-primary">Go back</Link></div>;
@@ -22,15 +36,31 @@ export default function PostDetail() {
 
   const handleReply = () => {
     if (newComment.trim()) {
-      setComments([{
-        id: Date.now(),
-        authorName: "Me",
-        authorHandle: "my_handle",
-        time: "just now",
+      const commentData = {
+        authorName: currentUser.name,
+        authorHandle: currentUser.handle,
         content: newComment,
-        avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8"
-      }, ...comments]);
-      setNewComment("");
+        avatar: currentUser.avatar
+      };
+
+      fetch(`http://localhost:8080/api/posts/${id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(commentData)
+      })
+        .then(res => res.json())
+        .then(data => {
+          setComments([{...data, time: formatTime(data.createdAt)}, ...comments]);
+          setNewComment("");
+          // Update parent post comment count locally
+          setPosts(posts.map(p => {
+             if (p.id === parseInt(id)) {
+                 return { ...p, comments: p.comments + 1 };
+             }
+             return p;
+          }));
+        })
+        .catch(err => console.error("Failed to post comment", err));
     }
   };
 
@@ -46,18 +76,20 @@ export default function PostDetail() {
       {/* Main Post */}
       <div className="p-6 border-b border-outline-variant/10">
         <div className="flex gap-4">
-          <div className="w-12 h-12 rounded-full overflow-hidden">
-            <img className="w-full h-full object-cover" src={post.avatar} alt={post.authorName} />
-          </div>
+          <Link to={`/profile/${post.authorHandle}`}>
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+              <img className="w-full h-full object-cover" src={post.avatar} alt={post.authorName} />
+            </div>
+          </Link>
           <div className="flex-1">
             <div className="flex flex-col">
-              <span className="font-bold text-on-surface text-lg">{post.authorName}</span>
+              <Link to={`/profile/${post.authorHandle}`} className="font-bold text-on-surface text-lg hover:underline">{post.authorName}</Link>
               <span className="text-on-surface-variant text-sm">@{post.authorHandle}</span>
             </div>
           </div>
           <button className="material-symbols-outlined text-on-surface-variant hover:bg-surface-container p-2 rounded-full h-fit">more_horiz</button>
         </div>
-        <p className="text-on-surface mt-4 text-xl leading-relaxed">
+        <p className="text-on-surface mt-4 text-xl leading-relaxed whitespace-pre-wrap">
           {post.content}
         </p>
         <div className="text-on-surface-variant text-sm mt-4 pb-4 border-b border-outline-variant/10">
@@ -67,8 +99,8 @@ export default function PostDetail() {
 
       {/* Add Comment Area */}
       <section className="p-4 border-b border-outline-variant/10 flex gap-4 items-start bg-surface-container-lowest">
-        <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-          <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8" alt="Me" />
+        <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-surface-container">
+          <img className="w-full h-full object-cover" src={currentUser.avatar} alt={currentUser.name} />
         </div>
         <div className="flex-1 flex flex-col">
           <textarea 
@@ -82,7 +114,7 @@ export default function PostDetail() {
             <button 
               onClick={handleReply}
               disabled={!newComment.trim()}
-              className="bg-primary-container text-on-primary px-4 py-1.5 rounded-full font-semibold transition-all active:scale-95 hover:opacity-90 disabled:opacity-50"
+              className="bg-gradient-to-br from-primary-container to-primary text-on-primary px-5 py-1.5 rounded-full font-semibold transition-all active:scale-95 hover:opacity-90 disabled:opacity-50"
             >
               Reply
             </button>
@@ -91,34 +123,42 @@ export default function PostDetail() {
       </section>
 
       {/* Comments List */}
-      <div className="flex flex-col">
-        {comments.map(comment => (
-          <article key={comment.id} className="p-6 hover:bg-surface-container-low/30 transition-colors border-b border-outline-variant/10">
-            <div className="flex gap-4">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full overflow-hidden">
-                  <img className="w-full h-full object-cover" src={comment.avatar} alt={comment.authorName} />
+      <div className="flex flex-col pb-10">
+        {isLoading ? (
+          <div className="p-8 text-center text-on-surface-variant">Loading comments...</div>
+        ) : comments.length > 0 ? (
+          comments.map(comment => (
+            <article key={comment.id} className="p-6 hover:bg-surface-container-low/30 transition-colors border-b border-outline-variant/10">
+              <div className="flex gap-4">
+                <div className="flex-shrink-0">
+                  <Link to={`/profile/${comment.authorHandle}`}>
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-container">
+                      <img className="w-full h-full object-cover" src={comment.avatar} alt={comment.authorName} />
+                    </div>
+                  </Link>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-1 flex-wrap">
+                    <Link to={`/profile/${comment.authorHandle}`} className="font-bold text-on-surface hover:underline">{comment.authorName}</Link>
+                    <span className="text-on-surface-variant text-sm font-normal">@{comment.authorHandle}</span>
+                    <span className="text-on-surface-variant text-xs mx-1">•</span>
+                    <span className="text-on-surface-variant text-xs">{comment.time}</span>
+                  </div>
+                  <p className="text-on-surface mt-1 whitespace-pre-wrap">
+                    {comment.content}
+                  </p>
+                  <div className="flex justify-start gap-8 mt-3 text-on-surface-variant">
+                    <button className="flex items-center gap-2 group">
+                      <span className="material-symbols-outlined text-[18px] group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors p-1.5 rounded-full">favorite</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-on-surface">{comment.authorName}</span>
-                  <span className="text-on-surface-variant text-sm font-normal">@{comment.authorHandle}</span>
-                  <span className="text-on-surface-variant text-xs mx-1">•</span>
-                  <span className="text-on-surface-variant text-xs">{comment.time}</span>
-                </div>
-                <p className="text-on-surface mt-1">
-                  {comment.content}
-                </p>
-                <div className="flex justify-start gap-8 mt-3 text-on-surface-variant">
-                  <button className="flex items-center gap-2 group">
-                    <span className="material-symbols-outlined text-[18px] group-hover:text-red-500 transition-colors">favorite</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))
+        ) : (
+          <div className="p-8 text-center text-on-surface-variant">No replies yet. Be the first!</div>
+        )}
       </div>
     </div>
   );

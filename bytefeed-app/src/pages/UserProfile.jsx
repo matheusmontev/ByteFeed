@@ -103,12 +103,28 @@ export default function UserProfile() {
       </div>
 
       <div className="flex flex-col">
-        {userPosts.map(post => (
-          <PostCard key={post.id} post={post} />
-        ))}
-        {userPosts.length === 0 && (
-          <div className="p-8 text-center text-on-surface-variant">
-            No posts yet.
+        {activeTab === "Posts" && (
+          <>
+            {userPosts.map(post => (
+              <PostCard key={post.id} post={post} />
+            ))}
+            {userPosts.length === 0 && (
+              <div className="p-8 text-center text-on-surface-variant">
+                No posts yet.
+              </div>
+            )}
+          </>
+        )}
+        {activeTab === "Replies" && (
+          <div className="p-12 text-center text-on-surface-variant flex flex-col items-center">
+            <span className="material-symbols-outlined text-4xl mb-2 opacity-50">forum</span>
+            <p>Replies will appear here.</p>
+          </div>
+        )}
+        {activeTab === "Likes" && (
+          <div className="p-12 text-center text-on-surface-variant flex flex-col items-center">
+            <span className="material-symbols-outlined text-4xl mb-2 opacity-50">favorite</span>
+            <p>Liked posts will appear here.</p>
           </div>
         )}
       </div>

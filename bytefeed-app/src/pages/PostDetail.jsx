@@ -48,19 +48,26 @@ export default function PostDetail() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentData)
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+          return res.json();
+        })
         .then(data => {
+          console.log("Comment posted successfully:", data);
           setComments([{...data, time: formatTime(data.createdAt)}, ...comments]);
           setNewComment("");
           // Update parent post comment count locally
-          setPosts(posts.map(p => {
+          setPosts(prevPosts => prevPosts.map(p => {
              if (p.id === parseInt(id)) {
-                 return { ...p, comments: p.comments + 1 };
+                 return { ...p, comments: (p.comments || 0) + 1 };
              }
              return p;
           }));
         })
-        .catch(err => console.error("Failed to post comment", err));
+        .catch(err => {
+          console.error("Failed to post comment:", err);
+          alert("Failed to post comment. Please check if the backend is running.");
+        });
     }
   };
 

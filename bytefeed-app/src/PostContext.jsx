@@ -4,6 +4,12 @@ const PostContext = createContext();
 
 export function PostProvider({ children }) {
   const [posts, setPosts] = useState([]);
+  
+  const currentUser = {
+    name: "Me",
+    handle: "my_handle",
+    avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8"
+  };
 
   const formatTime = (isoString) => {
     if (!isoString) return 'just now';
@@ -39,10 +45,10 @@ export function PostProvider({ children }) {
 
   const addPost = (content) => {
     const newPostData = {
-      authorName: "Me",
-      authorHandle: "my_handle",
+      authorName: currentUser.name,
+      authorHandle: currentUser.handle,
       content,
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8",
+      avatar: currentUser.avatar,
       comments: 0,
       retweets: 0,
       likes: 0
@@ -115,7 +121,7 @@ export function PostProvider({ children }) {
   };
 
   return (
-    <PostContext.Provider value={{ posts, addPost, toggleLike, deletePost }}>
+    <PostContext.Provider value={{ posts, addPost, toggleLike, deletePost, currentUser, formatTime, setPosts }}>
       {children}
     </PostContext.Provider>
   );

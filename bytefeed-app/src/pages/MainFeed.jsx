@@ -4,7 +4,7 @@ import PostCard from "../components/PostCard";
 import { usePosts } from "../PostContext";
 
 export default function MainFeed() {
-  const { posts, addPost } = usePosts();
+  const { posts, addPost, currentUser } = usePosts();
   const [newPostContent, setNewPostContent] = useState("");
   const [filterQuery, setFilterQuery] = useState("");
 
@@ -42,9 +42,9 @@ export default function MainFeed() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/profile/my_handle">
+            <Link to={`/profile/${currentUser.handle}`}>
               <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
-                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8" alt="Me" />
+                <img className="w-full h-full object-cover" src={currentUser.avatar} alt={currentUser.name} />
               </div>
             </Link>
           </div>
@@ -55,7 +55,7 @@ export default function MainFeed() {
         <div className="flex gap-4">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 rounded-full overflow-hidden">
-              <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8" alt="Me" />
+              <img className="w-full h-full object-cover" src={currentUser.avatar} alt={currentUser.name} />
             </div>
           </div>
           <div className="flex-1">

@@ -17,7 +17,7 @@ export default function PostDetail() {
   useEffect(() => {
     if (post) {
       setIsLoading(true);
-      fetch(`http://localhost:8080/api/posts/${id}/comments`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}/comments`)
         .then(res => res.json())
         .then(data => {
           setComments(data.map(c => ({...c, time: formatTime(c.createdAt)})));
@@ -43,7 +43,7 @@ export default function PostDetail() {
         avatar: currentUser.avatar
       };
 
-      fetch(`http://localhost:8080/api/posts/${id}/comments`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentData)

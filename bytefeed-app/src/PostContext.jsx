@@ -21,7 +21,7 @@ export function PostProvider({ children }) {
   };
 
   const fetchPosts = () => {
-    fetch('http://localhost:8080/api/posts')
+    fetch(`${import.meta.env.VITE_API_URL}/api/posts`)
       .then(res => res.json())
       .then(data => {
         const mappedPosts = data.map(post => ({
@@ -48,7 +48,7 @@ export function PostProvider({ children }) {
       likes: 0
     };
 
-    fetch('http://localhost:8080/api/posts', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPostData)
@@ -80,7 +80,7 @@ export function PostProvider({ children }) {
       return p;
     }));
 
-    fetch(`http://localhost:8080/api/posts/${id}/like?isLiked=${newIsLiked}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}/like?isLiked=${newIsLiked}`, {
       method: 'PATCH'
     })
       .then(res => {
@@ -100,7 +100,7 @@ export function PostProvider({ children }) {
     const previousPosts = [...posts];
     setPosts(posts.filter(post => post.id !== id));
 
-    fetch(`http://localhost:8080/api/posts/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
       method: 'DELETE'
     })
       .then(res => {

@@ -16,3 +16,11 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+  security:
+    user:
+      # Desabilita o usuário padrão gerado pelo Spring Security
+      name: ""
+
+jwt:
+  secret: 4a6f4e2e6c5b3a2d1e0f9c8b7a5d4e3f2c1b0a9e8d7c6b5a4e3d2c1b0a9e8d7
+  expiration: 604800000 # 7 dias em milissegundos

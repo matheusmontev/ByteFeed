@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { PostProvider } from './PostContext.jsx'
+import { AuthProvider } from './AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <PostProvider>
-      <App />
-    </PostProvider>
+    <AuthProvider>
+      <PostProvider>
+        <App />
+      </PostProvider>
+    </AuthProvider>
   </StrictMode>,
 )

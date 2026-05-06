@@ -1,14 +1,20 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const PostContext = createContext();
 
 export function PostProvider({ children }) {
+  const { token, user } = useAuth();
   const [posts, setPosts] = useState([]);
-  
-  const currentUser = {
-    name: "Me",
-    handle: "my_handle",
-    avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfTEVI-kwqn07qibiCe8faZpobwkfd_u2kgdwJR13SHl4H_z2Wnwl_39GndEYZLcfF0HRP1w0G5vfT7Kosm9yD-ba3rULpTaw5vUQqVVwuSrFuVKBYMu_wMr0Vn3EI6Xg8rb8_Hb0ccMGmNPatfld84wsaGoMO7GLBsqdvUbdaU6T-rdFILqb25GGeZxmwaI2-P6J7mDk3xyjAwvd8GDo1Mnw5snkTh1Yh49C6wOGPyvlvHQwnRVtuJmW7hEdxvxtmanUK8ltUeBO8"
+
+  // O currentUser agora vem do contexto de autenticação real
+  const currentUser = user
+    ? { name: user.name, handle: user.handle, avatar: user.avatarUrl }
+    : null;
+
+  const authHeaders = {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   const formatTime = (isoString) => {
@@ -16,7 +22,7 @@ export function PostProvider({ children }) {
     const date = new Date(isoString);
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-    
+
     if (diffInSeconds < 60) return 'just now';
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     if (diffInMinutes < 60) return `${diffInMinutes}m`;
@@ -44,25 +50,16 @@ export function PostProvider({ children }) {
   }, []);
 
   const addPost = (content) => {
-    const newPostData = {
-      authorName: currentUser.name,
-      authorHandle: currentUser.handle,
-      content,
-      avatar: currentUser.avatar,
-      comments: 0,
-      retweets: 0,
-      likes: 0
-    };
-
+    // O backend extrai author do token — enviamos apenas o content
     fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPostData)
+      headers: authHeaders,
+      body: JSON.stringify({ content }),
     })
       .then(res => res.json())
       .then(data => {
         const addedPost = { ...data, time: formatTime(data.createdAt) };
-        setPosts([addedPost, ...posts]);
+        setPosts(prev => [addedPost, ...prev]);
       })
       .catch(err => console.error("Failed to add post", err));
   };
@@ -70,12 +67,12 @@ export function PostProvider({ children }) {
   const toggleLike = (id) => {
     const post = posts.find(p => p.id === id);
     if (!post) return;
-    
-    // Optimistic UI update
+
     const isCurrentlyLiked = post.isLiked || false;
     const newIsLiked = !isCurrentlyLiked;
-    
-    setPosts(posts.map(p => {
+
+    // Optimistic UI update
+    setPosts(prev => prev.map(p => {
       if (p.id === id) {
         return {
           ...p,
@@ -87,37 +84,28 @@ export function PostProvider({ children }) {
     }));
 
     fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}/like?isLiked=${newIsLiked}`, {
-      method: 'PATCH'
+      method: 'PATCH',
+      headers: authHeaders,
     })
       .then(res => {
-        if (!res.ok) {
-           // Revert if failed
-           fetchPosts();
-        }
+        if (!res.ok) fetchPosts(); // Reverte se falhou
       })
-      .catch(err => {
-         console.error("Failed to toggle like", err);
-         fetchPosts(); // Revert if failed
-      });
+      .catch(() => fetchPosts());
   };
 
   const deletePost = (id) => {
-    // Optimistic UI update
     const previousPosts = [...posts];
-    setPosts(posts.filter(post => post.id !== id));
+    // Optimistic UI update
+    setPosts(prev => prev.filter(post => post.id !== id));
 
     fetch(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: authHeaders,
     })
       .then(res => {
-        if (!res.ok) {
-           setPosts(previousPosts);
-        }
+        if (!res.ok) setPosts(previousPosts); // Reverte se falhou
       })
-      .catch(err => {
-        console.error("Failed to delete post", err);
-        setPosts(previousPosts);
-      });
+      .catch(() => setPosts(previousPosts));
   };
 
   return (

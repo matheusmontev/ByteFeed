@@ -34,8 +34,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos de autenticação
                         .requestMatchers("/api/auth/**").permitAll()
-                        // Leitura de posts é pública (para não quebrar feeds sem login)
+                        // Leitura de posts é pública
                         .requestMatchers(HttpMethod.GET, "/api/posts", "/api/posts/**").permitAll()
+                        // Permite preflight (CORS) explicitamente
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Todo o resto exige autenticação
                         .anyRequest().authenticated()
                 )
@@ -52,7 +54,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "https://byte-feed.vercel.app"));
+        // Permite localhost e qualquer subdomínio da vercel (incluindo previews)
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:5173", 
+                "https://*.vercel.app", 
+                "https://vercel.live"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
